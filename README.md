@@ -1,7 +1,3 @@
-Here’s a sample `README.md` file for your quiz application:
-
----
-
 # Quiz Application
 
 This is a web-based **Quiz Application** that allows users to register, log in, take quizzes, and view their past quiz scores. The application stores user data in `localStorage` and tracks quiz progress in `sessionStorage`.
