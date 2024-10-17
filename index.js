@@ -370,8 +370,8 @@ function removeAllSections () {
     removeQuizSection();
     removeScoreSection();
     removePastScoresSection();
-    removeElementById( "actionButtons" );  // Remove the action buttons section
-    removeElementById( "dialog-default" ); // Remove the dialog
+    removeElementById( "actionButtons" ); 
+    removeElementById( "dialog-default" ); 
 }
 
 // Function to create and append the registration form dynamically
@@ -483,7 +483,6 @@ function validateRegistrationForm () {
         return;
     }
 
-    // Register the new user
     registerUser( fields );
 }
 
@@ -567,7 +566,6 @@ function generateUniqueId () {
     return "user_" + Math.floor( Math.random() * 1650 ) + 256; // Simple unique ID
 }
 
-// Function to remove error classes and hide the error message
 // Function to remove error classes and hide the error message
 function clearErrorStyles () {
     const { firstName, lastName, email, registerUsername, registerPassword, confirmPassword } = getRegisterFormFields();
@@ -659,9 +657,9 @@ function validateLoginForm () {
 
     // Login logic
     if ( user ) {
-        handleLoginSuccess( user ); // On successful login
+        handleLoginSuccess( user ); 
     } else {
-        handleLoginError( "Incorrect username or password." ); // On login failure
+        handleLoginError( "Incorrect username or password." ); 
     }
 }
 
@@ -688,7 +686,7 @@ function handleLoginSuccess ( user ) {
     loginError.style.display = "none"; // Hide any previous error
 
     // Load user data and proceed to the quiz
-    loadQuiz(); // Proceed to quiz section
+    loadQuiz(); 
 }
 
 // Function to remove error classes and hide the login error message
@@ -698,8 +696,6 @@ function clearLoginErrorStyles () {
 
     // Remove error class from both fields
     fields.forEach( ( field ) => field.classList.remove( "is-error" ) );
-
-    // Hide error message
     loginError.style.display = "none";
 }
 
@@ -1066,10 +1062,10 @@ function checkAnswer ( selected ) {
 
     // Store progress only at the end of the quiz
     if ( currentQuestion < quizData.length ) {
-        displayQuestion(); // Show the next question
+        displayQuestion(); 
     } else {
-        sessionStorage.setItem( "quizProgress", currentQuestion ); // Store the progress
-        showScore(); // Display final score
+        sessionStorage.setItem( "quizProgress", currentQuestion ); 
+        showScore(); 
     }
 }
 
@@ -1135,7 +1131,6 @@ function checkProgressAtEnd ( currentUserId ) {
         return true;
     }
 }
-
 
 // Initial load
 window.onload = loadQuiz;
