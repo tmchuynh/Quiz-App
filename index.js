@@ -477,7 +477,7 @@ function validateRegistrationForm () {
     }
 
     // Check if user already exists
-    const users = JSON.parse( localStorage.getItem( "users" ) ) || [];
+    const users = JSON.parse( sessionStorage.getItem( "users" ) ) || [];
     if ( isUsernameTaken( registerUsername.value.trim(), users ) ) {
         showError( "Username already exists.", registerUsername );
         return;
@@ -533,16 +533,16 @@ function registerUser ( fields ) {
     };
 
     // Retrieve existing users from localStorage or initialize an empty array
-    const users = JSON.parse( localStorage.getItem( "users" ) ) || [];
+    const users = JSON.parse( sessionStorage.getItem( "users" ) ) || [];
 
     // Add the new user to the users array
     users.push( newUser );
 
     // Save the updated users array in localStorage
-    localStorage.setItem( "users", JSON.stringify( users ) );
+    sessionStorage.setItem( "users", JSON.stringify( users ) );
 
     // Optionally, store the first name separately if needed
-    localStorage.setItem( "firstName", newUser.firstName );
+    sessionStorage.setItem( "firstName", newUser.firstName );
 
     // Update the UI to transition from registration to login
     registerSection.style.display = "none";
