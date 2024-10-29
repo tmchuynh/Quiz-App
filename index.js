@@ -2,34 +2,100 @@
 // Quiz Data
 const quizData = [
     {
-        question: "What is the largest planet in our Solar System?",
+        question: "What is the chemical symbol for gold?",
         answers: [
-            { text: "Earth", correct: false },
-            { text: "Mars", correct: false },
-            { text: "Jupiter", correct: true },
-            { text: "Saturn", correct: false }
+            { text: "Au", correct: true },
+            { text: "Ag", correct: false },
+            { text: "Pb", correct: false },
+            { text: "Fe", correct: false }
         ]
     },
     {
-        question: "What gas do plants absorb from the atmosphere?",
+        question: "Which of the following is a noble gas?",
         answers: [
             { text: "Oxygen", correct: false },
-            { text: "Carbon Dioxide", correct: true },
             { text: "Nitrogen", correct: false },
+            { text: "Argon", correct: true },
             { text: "Hydrogen", correct: false }
         ]
     },
     {
-        question: "What is the chemical symbol for water?",
+        question: "What is the pH of pure water?",
         answers: [
-            { text: "O2", correct: false },
-            { text: "H2O", correct: true },
-            { text: "CO2", correct: false },
-            { text: "NaCl", correct: false }
+            { text: "7", correct: true },
+            { text: "5", correct: false },
+            { text: "10", correct: false },
+            { text: "3", correct: false }
         ]
     },
-    // ... (rest of the quiz data can be transformed similarly)
+    {
+        question: "What is the primary component of natural gas?",
+        answers: [
+            { text: "Ethane", correct: false },
+            { text: "Propane", correct: false },
+            { text: "Methane", correct: true },
+            { text: "Butane", correct: false }
+        ]
+    },
+    {
+        question: "Which acid is found in citrus fruits?",
+        answers: [
+            { text: "Acetic acid", correct: false },
+            { text: "Citric acid", correct: true },
+            { text: "Lactic acid", correct: false },
+            { text: "Sulfuric acid", correct: false }
+        ]
+    },
+    {
+        question: "What is the most abundant gas in the Earth's atmosphere?",
+        answers: [
+            { text: "Oxygen", correct: false },
+            { text: "Carbon Dioxide", correct: false },
+            { text: "Nitrogen", correct: true },
+            { text: "Argon", correct: false }
+        ]
+    },
+    {
+        question: "What type of bond involves the sharing of electron pairs between atoms?",
+        answers: [
+            { text: "Ionic bond", correct: false },
+            { text: "Covalent bond", correct: true },
+            { text: "Metallic bond", correct: false },
+            { text: "Hydrogen bond", correct: false }
+        ]
+    },
+    {
+        question: "Which element has the atomic number 1?",
+        answers: [
+            { text: "Helium", correct: false },
+            { text: "Hydrogen", correct: true },
+            { text: "Lithium", correct: false },
+            { text: "Oxygen", correct: false }
+        ]
+    },
+    {
+        question: "What is the process of a solid turning directly into a gas called?",
+        answers: [
+            { text: "Condensation", correct: false },
+            { text: "Sublimation", correct: true },
+            { text: "Evaporation", correct: false },
+            { text: "Deposition", correct: false }
+        ]
+    },
+    {
+        question: "Which of the following is a base?",
+        answers: [
+            { text: "Hydrochloric acid", correct: false },
+            { text: "Sodium hydroxide", correct: true },
+            { text: "Acetic acid", correct: false },
+            { text: "Sulfuric acid", correct: false }
+        ]
+    }
 ];
+
+
+
+// Create the global variables
 let currentQuestion = 0;
 const totalQuestions = quizData.length; // Total number of questions
 let score = 0;
@@ -140,6 +206,11 @@ function validateEmail(email) {
     return re.test(email);
 }
 // Validate registration form
+/**
+ * Validates the registration form and performs necessary checks.
+ * 
+ * @returns {Promise<void>} - A promise that resolves when the form is successfully validated and the user is registered.
+ */
 async function validateRegistrationForm() {
     const { firstName, lastName, email, registerUsername, registerPassword, confirmPassword } = getRegisterFormFields();
     const fields = [
@@ -214,9 +285,18 @@ function getRegisterFormFields() {
     const confirmPassword = document.getElementById("confirmPassword");
     return { firstName, lastName, email, registerUsername, registerPassword, confirmPassword };
 }
+/**
+ * Registers a new user and updates the user interface.
+ * 
+ * @param {Array} fields - An array of input fields containing user information.
+ * The expected order of fields is: firstName, lastName, email, username, and password.
+ * 
+ * @returns {Promise<void>} - A promise that resolves when the user registration and UI update are complete.
+ */
 async function registerUser(fields) {
     // Hash the password before storing it
     const hashedPassword = await hashPassword(fields[4].element.value.trim());
+
     const newUser = {
         id: generateUniqueId(),
         firstName: fields[0].element.value.trim(),
@@ -224,12 +304,16 @@ async function registerUser(fields) {
         username: fields[3].element.value.trim(),
         password: hashedPassword, // Store the hashed password
     };
+
     // Retrieve existing users from localStorage or initialize an empty array
     const users = JSON.parse(sessionStorage.getItem("users") || "[]");
+
     // Add the new user to the users array
     users.push(newUser);
+
     // Save the updated users array in localStorage
     sessionStorage.setItem("users", JSON.stringify(users));
+
     // Update the UI to transition from registration to login
     const registerSection = document.getElementById("registerSection");
     const loginSection = document.getElementById("loginSection");
@@ -237,6 +321,13 @@ async function registerUser(fields) {
     loginSection.style.display = "block"; // Go to login after registration
 }
 // Helper function to hash the password (SHA-256 example)
+/**
+ * Hashes a password using the SHA-256 algorithm.
+ * 
+ * @param {string} password - The password to be hashed.
+ * 
+ * @returns {Promise<string>} - A promise that resolves to the hashed password as a hexadecimal string.
+ */
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -252,6 +343,14 @@ function generateUniqueId() {
     return "user_" + (Math.floor(Math.random() * 1650) + 256); // Simple unique ID
 }
 // Function to remove error classes and hide the error message
+/**
+ * Removes error classes and hides the registration error message.
+ * 
+ * This function is called when the user interacts with the registration form fields.
+ * It ensures that any previous error styles are cleared and the error message is hidden.
+ * 
+ * @returns {void}
+ */
 function clearErrorStyles() {
     const { firstName, lastName, email, registerUsername, registerPassword, confirmPassword } = getRegisterFormFields();
     const fields = [
@@ -262,9 +361,13 @@ function clearErrorStyles() {
         registerPassword,
         confirmPassword,
     ];
-    fields.forEach((field) => field.classList.remove("is-error")); // Remove error class from all fields
+
+    // Remove error class from all fields
+    fields.forEach((field) => field.classList.remove("is-error"));
+
+    // Hide error message
     const registerError = document.getElementById("registerError");
-    registerError.style.display = "none"; // Hide error message
+    registerError.style.display = "none";
 }
 // Function to create and append the login form dynamically
 function createLoginSection() {
@@ -362,27 +465,51 @@ function handleLoginError(message) {
     [loginUsername, loginPassword].forEach((field) => field.classList.add("is-error"));
 }
 // Helper function to handle successful login
+/**
+ * Handles the successful login by setting the current session user's data in local storage,
+ * hiding any previous login error, and loading the quiz.
+ * 
+ * @param {Object} user - The user object representing the logged-in user.
+ * The object should have properties: id, firstName, lastName, and username.
+ * 
+ * @returns {void}
+ */
 function handleLoginSuccess(user) {
     // Set current session user
     localStorage.setItem("currentUserId", user.id);
     localStorage.setItem("firstName", user.firstName);
     localStorage.setItem("lastName", user.lastName);
     localStorage.setItem("username", user.username);
+
     const loginError = document.getElementById("loginError");
     loginError.style.display = "none"; // Hide any previous error
+
     // Load user data and proceed to the quiz
     loadQuiz(); // Proceed to quiz section
 }
-// Function to remove error classes and hide the login error message
+/**
+ * Removes error classes and hides the login error message.
+ * 
+ * @returns {void}
+ */
 function clearLoginErrorStyles() {
     const { loginUsername, loginPassword } = getLoginFormFields();
     const fields = [loginUsername, loginPassword];
+
     // Remove error class from both fields
     fields.forEach((field) => field.classList.remove("is-error"));
+
     // Hide error message
     const loginError = document.getElementById("loginError");
     loginError.style.display = "none";
 }
+/**
+ * Adds an event listener to the logout button, which clears the quiz progress,
+ * removes all sections, creates the registration and login sections, clears the welcome message,
+ * and clears all data from local storage when clicked.
+ * 
+ * @returns {void}
+ */
 function logoutEventListener() {
     var _a;
     (_a = document.querySelector("#logoutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
@@ -398,6 +525,11 @@ function logoutEventListener() {
         localStorage.clear();
     });
 }
+/**
+ * Clears all data from local storage when the user closes the browser tab.
+ * 
+ * @returns {void}
+ */
 window.addEventListener('beforeunload', () => {
     localStorage.clear();
 });
@@ -464,9 +596,18 @@ function createActionButtons() {
     displayContainer.appendChild(actionButtons);
     logoutEventListener();
 }
+/**
+ * Creates and appends buttons for viewing and resetting past scores.
+ * 
+ * @returns {void}
+ */
 function createScoresButtons() {
     var _a, _b;
+
+    // Remove existing action buttons
     removeElementById("actionButtons");
+
+    // Create new action buttons section
     const actionButtons = document.createElement("section");
     actionButtons.id = "actionButtons";
     actionButtons.className = "buttonGroup";
@@ -475,19 +616,36 @@ function createScoresButtons() {
         <button id="viewScoresButton" class="nes-btn is-success">View Past Scores</button>
         <button id="resetScoresButton" class="nes-btn is-error">Reset All Scores</button>
     `;
+
+    // Append the action buttons section to the display container
     displayContainer.appendChild(actionButtons);
+
+    // Add event listeners for the logout button, view scores button, and reset scores button
     logoutEventListener();
+
+    // Add event listener for the "View Past Scores" button
     (_a = document.querySelector("#viewScoresButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
         createSortButtons();
     });
+
+    // Add event listener for the "Reset All Scores" button
     (_b = document.querySelector("#resetScoresButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
         // Show the confirmation dialog
         createDialog();
     });
 }
+/**
+ * Creates and appends buttons for sorting past scores.
+ * 
+ * @returns {void}
+ */
 function createSortButtons() {
     var _a, _b, _c;
+
+    // Remove existing action buttons
     removeElementById("actionButtons");
+
+    // Create new action buttons section
     const actionButtons = document.createElement("section");
     actionButtons.id = "actionButtons";
     actionButtons.className = "buttonGroup";
@@ -497,32 +655,62 @@ function createSortButtons() {
         <button id="sortByDateButton" class="nes-btn is-primary">Sort by Date</button>
         <button id="sortByScoreButton" class="nes-btn is-primary">Sort by Score</button>
     `;
+
+    // Append the action buttons section to the display container
     displayContainer.appendChild(actionButtons);
+
+    // Add event listeners for the logout button, reset scores button, and sort buttons
     logoutEventListener();
+
     // Get the current user ID
     const currentUserId = localStorage.getItem("currentUserId");
+
+    // Construct the key for the user's scores in local storage
     const userScoresKey = `quizScores_${currentUserId}`;
+
+    // Retrieve the user's past scores from local storage
     const pastScores = JSON.parse(sessionStorage.getItem(userScoresKey) || "[]");
+
+    // Render the past scores in a table format
     renderScores(pastScores);
-    // Sort by Date (newest to oldest)
+
+    // Add event listener for the "Sort by Date" button
     (_a = document.querySelector("#sortByDateButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+        // Sort past scores by date (newest to oldest)
         const sortedByDate = [...pastScores].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        // Render the sorted scores
         renderScores(sortedByDate);
     });
-    // Sort by Score (highest to lowest)
+
+    // Add event listener for the "Sort by Score" button
     (_b = document.querySelector("#sortByScoreButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
+        // Sort past scores by score (highest to lowest)
         const sortedByPercentage = [...pastScores].sort((a, b) => {
             const percentageA = (a.score / a.total) * 100;
             const percentageB = (b.score / b.total) * 100;
             return percentageB - percentageA; // Sort by percentage (highest first)
         });
+
+        // Render the sorted scores
         renderScores(sortedByPercentage);
     });
+
+    // Add event listener for the "Reset All Scores" button
     (_c = document.querySelector("#resetScoresButton")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => {
         // Show the confirmation dialog
         createDialog();
     });
 }
+
+/**
+ * Renders the past scores in a table format.
+ * 
+ * @param {Array} pastScores - An array of objects representing past scores.
+ * Each object should have properties: score, total, and date.
+ * 
+ * @returns {void}
+ */
 function renderScores(pastScores) {
     // Remove existing sections
     removeElementById("quizSection");
@@ -556,7 +744,14 @@ function renderScores(pastScores) {
         ${tableRows}
     `;
 }
-// Helper function to format date to mm/dd/yy
+/**
+ * Formats a date string to the mm/dd/yy format.
+ * 
+ * @param {string} dateString - The date string to be formatted.
+ * The string should be in a valid date format.
+ * 
+ * @returns {string} - The formatted date string in mm/dd/yy format.
+ */
 function formatDate(dateString) {
     const date = new Date(dateString); // Convert the string to a Date object
     const month = (date.getMonth() + 1).toString().padStart(2, "0"); // getMonth() returns 0-11, so add 1
@@ -564,6 +759,52 @@ function formatDate(dateString) {
     const year = date.getFullYear().toString().slice(-2); // Get last 2 digits of the year (yy)
     return `${month}/${day}/${year}`; // Return in mm/dd/yy format
 }
+/**
+ * Renders the past scores in a table format.
+ * 
+ * @param {Array} pastScores - An array of objects representing past scores.
+ * Each object should have properties: score, total, and date.
+ * 
+ * @returns {void}
+ */
+function renderScores(pastScores) {
+    // Remove existing sections
+    removeElementById("quizSection");
+    removeElementById("scoreSection");
+    removeElementById("pastScoresSection");
+    // Create the past scores section dynamically
+    createPastScoresSection();
+    // Create table headers and rows for the scores
+    const tableHeaders = `
+        <tr>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th class="scoreDate">Date</th>
+        </tr>`;
+    const tableRows = pastScores
+        .map(({ score, total, date }) => {
+            const percentage = ((score / total) * 100).toFixed(2); // Calculate percentage
+            const formattedDate = formatDate(date);
+            return `
+                <tr>
+                    <td>${score} / ${total}</td>
+                    <td class="scorePercentage">${percentage}%</td>
+                    <td class="scoreDate">${formattedDate}</td>
+                </tr>`;
+        })
+        .join("");
+    // Insert the table into the #pastScores element
+    const pastScoresElement = document.querySelector("#pastScores");
+    pastScoresElement.innerHTML = `
+        ${tableHeaders}
+        ${tableRows}
+    `;
+}
+/**
+ * Creates a dialog for confirming the reset of past scores.
+ * 
+ * @returns {void}
+ */
 function createDialog() {
     var _a, _b;
     const dialog = document.createElement("dialog");
@@ -599,6 +840,11 @@ function createDialog() {
         removeElementById('dialog-dark-rounded'); // Close the dialog
     });
 }
+/**
+ * Resets the quiz variables and returns the user to the beginning of the quiz.
+ * 
+ * @returns {void}
+ */
 function returnToBeginning() {
     // Reset quiz variables
     currentQuestion = 0;
@@ -613,7 +859,11 @@ function returnToBeginning() {
     // Display the first question
     loadQuiz();
 }
-// Load Quiz
+/**
+ * Loads the quiz and initializes the user interface based on the user's login status.
+ * 
+ * @returns {boolean} - Returns true if the quiz is successfully loaded, false otherwise.
+ */
 function loadQuiz() {
     const currentUserId = localStorage.getItem("currentUserId");
     if (!currentUserId) {
@@ -660,24 +910,43 @@ function loadQuiz() {
     loadProgress();
     return true;
 }
-// Function to load progress on quiz start
+/**
+ * Loads the quiz progress from local storage and updates the current question and score.
+ * If no progress is found, initializes the current question and score to 0.
+ * 
+ * @returns {void}
+ */
 function loadProgress() {
+    // Get the current user ID from local storage
     const currentUserId = localStorage.getItem("currentUserId");
+
+    // Construct the key for the user's progress in local storage
     const userProgressKey = `quizProgress_${currentUserId}`;
+
+    // Retrieve the progress data from local storage
     const progressData = sessionStorage.getItem(userProgressKey);
+
+    // If progress data is found, update the current question and score
     if (progressData) {
         const { currentQuestion: savedQuestion, score: savedScore } = JSON.parse(progressData);
         currentQuestion = savedQuestion;
         score = savedScore;
         console.log(currentQuestion, score);
     }
+    // If no progress data is found, initialize the current question and score to 0
     else {
         currentQuestion = 0; // Start from the beginning if no progress is saved
         score = 0;
     }
+
+    // Display the first question in the quiz
     displayQuestion();
 }
-// Display Question
+/**
+ * Displays the current question in the quiz.
+ * 
+ * @returns {void}
+ */
 function displayQuestion() {
     // Display the action buttons and show the logout button
     const currentQuizData = quizData[currentQuestion];
@@ -715,17 +984,31 @@ function displayQuestion() {
     // Update the progress bar
     updateProgressBar();
 }
-// Function to update the progress bar
+/**
+
+ * Updates the progress bar with the current quiz progress.
+ * 
+ * @returns {void}
+ */
 function updateProgressBar() {
     const progressBar = document.getElementById("quizProgressBar");
     const progressValue = ((currentQuestion + 1) / totalQuestions) * 100; // Calculate percentage
     progressBar.value = progressValue; // Update the value of the progress bar
+
     // Save current progress in session storage
     const currentUserId = localStorage.getItem("currentUserId");
     const userProgressKey = `quizProgress_${currentUserId}`;
     sessionStorage.setItem(userProgressKey, JSON.stringify({ currentQuestion, score })); // Store progress
 }
-// Check Answer
+/**
+ * Checks the selected answer and updates the score and current question index.
+ * Stores progress only at the end of the quiz.
+ * 
+ * @param {Object} selected - The selected answer object.
+ * It should have a property 'correct' indicating whether the answer is correct.
+ * 
+ * @returns {void}
+ */
 function checkAnswer(selected) {
     // Increment score if the selected answer is correct
     if (true === selected.correct) {
@@ -746,6 +1029,13 @@ function checkAnswer(selected) {
         sessionStorage.setItem("quizProgress", String(currentQuestion));
     }
 }
+/**
+ * Shuffles an array using the Fisher-Yates algorithm and a random sort shuffle.
+ * 
+ * @param {Array} array - The array to be shuffled.
+ * 
+ * @returns {Array} - The shuffled array.
+ */
 const shuffle = (array) => {
     // Step 1: Fisher-Yates Shuffle
     for (let i = array.length - 1; i > 0; i--) {
@@ -758,7 +1048,12 @@ const shuffle = (array) => {
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value);
 };
-// Show Score
+/**
+
+ * Displays the final score of the quiz and updates the user's past scores.
+ * 
+ * @returns {void}
+ */
 function showScore() {
     removeAllSections();
     // Display the score section
@@ -791,6 +1086,15 @@ function showScore() {
         scoreMessageEl.textContent = `Most Recent Score: ${mostRecentScore.score} out of ${mostRecentScore.total} on ${mostRecentScore.date}`;
     }
 }
+/**
+ * Checks if the user has reached the end of the quiz based on their progress.
+ * 
+ * @param {string} currentUserId - The ID of the current user.
+ * 
+ * @returns {boolean} - Returns true if the user has reached the end of the quiz, false otherwise.
+ * The function retrieves the current quiz progress from local storage and checks if the user's current question index
+ * is equal to the total number of questions minus one.
+ */
 function checkProgressAtEnd(currentUserId) {
     // Retrieve current quiz progress
     const quizProgress = sessionStorage.getItem(`quizProgress_${currentUserId}`);
