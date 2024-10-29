@@ -123,8 +123,8 @@ function createRegisterSection() {
     const passwordElement = document.querySelector("#registerPassword");
     const confirmPasswordElement = document.querySelector("#confirmPassword");
 
-    checkbox.addEventListener('change', function (this) {
-        if (this.checked) {
+    checkbox.addEventListener('change', function () {
+        if ($(this).is(':checked')) {
             passwordElement.type = "text";
             confirmPasswordElement.type = "text";
         }
@@ -303,8 +303,8 @@ function createLoginSection() {
     const checkbox = loginContainer.querySelector('#loginPasswordView');
 
     const passwordElement = document.querySelector("#loginPassword");
-    checkbox.addEventListener('change', function (this) {
-        if (this.checked) {
+    checkbox.addEventListener('change', function () {
+        if ($(this).is(':checked')) {
             passwordElement.type = "text";
         }
         else {
@@ -398,6 +398,9 @@ function logoutEventListener() {
         localStorage.clear();
     });
 }
+window.addEventListener('beforeunload', () => {
+    localStorage.clear();
+});
 // Function to create and append the quiz section dynamically
 function createQuizSection() {
     const quizSection = document.createElement("div");
