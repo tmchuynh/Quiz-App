@@ -243,7 +243,7 @@ const quizData = {
                 { text: "'string'", correct: false },
                 { text: "'String'", correct: false },
                 { text: "'object'", correct: false },
-                { text: "'string'", correct: true }
+                { text: "'Hello'", correct: true }
             ]
         },
         {
@@ -3099,7 +3099,7 @@ function createQuizSelection() {
             <button id="economicsQuiz_Button" class="nes-btn social-studies">Economics Quiz</button>
             <button id="financeQuiz_Button" class="nes-btn social-studies">Finance Quiz</button>
             <button id="realEstateQuiz_Button" class="nes-btn social-studies">Real Estate Quiz</button>
-        </div> 23
+        </div>
     `;
     displayContainer.appendChild(quizSelectionSection);
     const Quiz_Buttons = document.querySelectorAll(".quiz-selection-section button");
@@ -3560,6 +3560,7 @@ function displayQuestion() {
     questionEl.textContent = currentQuizData.question;
     // Efficient shuffling using Fisher-Yates
     const shuffledAnswers = shuffle(currentQuizData.answers);
+
     // If there are more buttons than answers, remove the excess ones
     while (answersEl.children.length > shuffledAnswers.length) {
         answersEl.removeChild(answersEl.lastChild);
@@ -3582,7 +3583,7 @@ function displayQuestion() {
         // Remove any previous event listeners and add a new one
         const newButton = button.cloneNode(true); // Clean up old event listeners
         button.replaceWith(newButton); // Replace old button with new one
-        newButton.addEventListener("click", () => checkAnswer(index));
+        newButton.addEventListener("click", () => checkAnswer(shuffledAnswers, index));
     });
     // Update the progress bar
     updateProgressBar();
@@ -3613,13 +3614,9 @@ function updateProgressBar() {
  * 
  * @returns {void}
  */
-function checkAnswer(selected) {
-    const selection = sessionStorage.getItem("quizData");
-    const currentQuiz = quizData[selection];
-    console.log("checking answer...");
-    console.log("selected", selected);
+function checkAnswer(shuffledAnswers, selected) {
     // Increment score if the selected answer is correct
-    if (true === currentQuiz[currentQuestion].answers[selected].correct) {
+    if (true === shuffledAnswers[selected].correct) {
         score++;
     }
     // Update the current question index
