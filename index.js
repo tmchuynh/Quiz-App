@@ -3108,10 +3108,12 @@ function createQuizSelection() {
         sessionStorage.setItem("quizData", quizData);
 
         const tempArray = sessionStorage.getItem("quizId").split("_")[0].split(/(?=[A-Z])/);
-        tempArray[0] = tempArray[0].charAt(0).toUpperCase() + tempArray[0].slice(1);
-        const quiz_type = tempArray.join(" ");
+        if (tempArray) {
+            tempArray[0] = tempArray[0].charAt(0).toUpperCase() + tempArray[0].slice(1);
+            const quiz_type = tempArray.join(" ");
 
-        sessionStorage.setItem("quizType", quiz_type);
+            sessionStorage.setItem("quizType", quiz_type);
+        }
 
         // Load user progress in the quiz
         loadProgress();
@@ -3263,7 +3265,7 @@ function createSortButtons() {
     // Add event listener for the "Sort by Quiz" button
     (_a = document.querySelector("#sortByQuizButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
         // Sort past scores by quiz name (alphabetically)
-        const sortedByQuiz = [...pastScores].sort((a, b) => a.quiz.localeCompare(b.quizName));
+        const sortedByQuiz = [...pastScores].sort((a, b) => a.quiz.localeCompare(b.quiz));
 
         // Render the sorted scores
         renderScores(sortedByQuiz);
@@ -3388,7 +3390,6 @@ function createDialog() {
     (_a = document.getElementById("resetConfirm")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
         const currentUserId = sessionStorage.getItem("currentUserId");;
         localStorage.removeItem(`quizScores_${currentUserId}`); // Clear the quiz scores
-        localStorage.removeItem(`quizScores_${currentUserId}`);
         sessionStorage.removeItem("quizData");
         sessionStorage.removeItem("quizId");
         removeAllSections();
@@ -3466,8 +3467,6 @@ function loadQuiz() {
     else {
         createActionButtons();
     }
-
-
 
     createQuizSelection();
     return true;
