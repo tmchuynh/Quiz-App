@@ -236,7 +236,7 @@ const quizData = {
         }
     ],
 
-    programmingQuizData: [
+    computerScienceQuizData: [
         {
             question: "What is the output of the following code: console.log(typeof 'Hello')?",
             answers: [
@@ -466,6 +466,144 @@ const quizData = {
                 { text: "Russia", correct: true },
                 { text: "Egypt", correct: false },
                 { text: "Greece", correct: false }
+            ]
+        }
+    ],
+
+    englishQuizData: [
+        {
+            question: "What is the synonym of 'happy'?",
+            answers: [
+                { text: "Sad", correct: false },
+                { text: "Joyful", correct: true },
+                { text: "Angry", correct: false },
+                { text: "Bored", correct: false }
+            ]
+        },
+        {
+            question: "Which of the following is a proper noun?",
+            answers: [
+                { text: "city", correct: false },
+                { text: "Paris", correct: true },
+                { text: "river", correct: false },
+                { text: "tree", correct: false }
+            ]
+        },
+        {
+            question: "What is the plural form of 'child'?",
+            answers: [
+                { text: "Childs", correct: false },
+                { text: "Children", correct: true },
+                { text: "Childer", correct: false },
+                { text: "Childrens", correct: false }
+            ]
+        },
+        {
+            question: "Which of the following is an adjective?",
+            answers: [
+                { text: "Run", correct: false },
+                { text: "Beautiful", correct: true },
+                { text: "Quickly", correct: false },
+                { text: "Happiness", correct: false }
+            ]
+        },
+        {
+            question: "Identify the verb in the following sentence: 'She runs every morning.'",
+            answers: [
+                { text: "She", correct: false },
+                { text: "Runs", correct: true },
+                { text: "Every", correct: false },
+                { text: "Morning", correct: false }
+            ]
+        },
+        {
+            question: "What is the past tense of 'go'?",
+            answers: [
+                { text: "Goes", correct: false },
+                { text: "Gone", correct: false },
+                { text: "Went", correct: true },
+                { text: "Going", correct: false }
+            ]
+        },
+        {
+            question: "Which word is a homophone of 'flour'?",
+            answers: [
+                { text: "Flower", correct: true },
+                { text: "Floor", correct: false },
+                { text: "Flew", correct: false },
+                { text: "Flourish", correct: false }
+            ]
+        },
+        {
+            question: "What is the correct form of the adjective in this sentence: 'She is the ___ runner in the race.'",
+            answers: [
+                { text: "Fast", correct: false },
+                { text: "Faster", correct: false },
+                { text: "Fastest", correct: true },
+                { text: "More Fast", correct: false }
+            ]
+        },
+        {
+            question: "Which sentence is grammatically correct?",
+            answers: [
+                { text: "He go to the store.", correct: false },
+                { text: "He goes to the store.", correct: true },
+                { text: "He gone to the store.", correct: false },
+                { text: "He going to the store.", correct: false }
+            ]
+        },
+        {
+            question: "What is an antonym for 'difficult'?",
+            answers: [
+                { text: "Easy", correct: true },
+                { text: "Hard", correct: false },
+                { text: "Complex", correct: false },
+                { text: "Challenging", correct: false }
+            ]
+        },
+        {
+            question: "Which of the following is a compound sentence?",
+            answers: [
+                { text: "I like to read.", correct: false },
+                { text: "I like to read, and I enjoy writing.", correct: true },
+                { text: "Reading is fun.", correct: false },
+                { text: "He runs fast.", correct: false }
+            ]
+        },
+        {
+            question: "What part of speech is 'quickly'?",
+            answers: [
+                { text: "Noun", correct: false },
+                { text: "Adverb", correct: true },
+                { text: "Adjective", correct: false },
+                { text: "Verb", correct: false }
+            ]
+        },
+        {
+            question: "Identify the main idea of the following sentence: 'Despite the rain, the picnic was a success.'",
+            answers: [
+                { text: "It rained.", correct: false },
+                { text: "The picnic was a success.", correct: true },
+                { text: "It was cloudy.", correct: false },
+                { text: "Everyone was wet.", correct: false }
+            ]
+        },
+        {
+            question: "What is the meaning of the idiom 'break the ice'?",
+            answers: [
+                { text: "To make a hole in ice", correct: false },
+                { text: "To make people feel more comfortable", correct: true },
+                { text: "To start a fight", correct: false },
+                { text: "To end a conversation", correct: false }
+            ]
+        },
+        {
+            question: "What punctuation mark is used to indicate a question?",
+            answers: [
+                { text: "Period", correct: false },
+                { text: "Exclamation mark", correct: false },
+                { text: "Question mark", correct: true },
+                { text: "Comma", correct: false }
             ]
         }
     ],
@@ -2922,7 +3060,7 @@ function logoutEventListener() {
         if (welcomeMessage) {
             welcomeMessage.textContent = ""; // Clear welcome message
         }
-        localStorage.clear();
+        sessionStorage.clear();
     });
 }
 
@@ -2961,7 +3099,7 @@ function createQuizSelection() {
             <button id="economicsQuiz_Button" class="nes-btn social-studies">Economics Quiz</button>
             <button id="financeQuiz_Button" class="nes-btn social-studies">Finance Quiz</button>
             <button id="realEstateQuiz_Button" class="nes-btn social-studies">Real Estate Quiz</button>
-        </div>
+        </div> 23
     `;
     displayContainer.appendChild(quizSelectionSection);
     const Quiz_Buttons = document.querySelectorAll(".quiz-selection-section button");
@@ -2970,19 +3108,6 @@ function createQuizSelection() {
         let quizData = button.id.split("_")[0].concat("Data");
         sessionStorage.setItem("quizData", quizData);
 
-        const currentUserId = sessionStorage.getItem("currentUserId");;
-
-        const userProgressKey = `quizProgress_${currentUserId}`;
-
-        if (localStorage.getItem(userProgressKey)) {
-            createScoresButtons();
-        }
-        else {
-            createActionButtons();
-        }
-        if (!document.querySelector("#quizSection")) {
-            createQuizSection();
-        }
 
         // Load user progress in the quiz
         loadProgress();
@@ -3036,7 +3161,7 @@ function createPastScoresSection() {
             showScore();
         }
         else {
-            !loadQuiz();
+            loadQuiz();
         }
     });
 }
@@ -3082,6 +3207,7 @@ function createScoresButtons() {
 
     // Add event listener for the "View Past Scores" button
     (_a = document.querySelector("#viewScoresButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+        removeElementById("quizSelectionSection");
         createSortButtons();
     });
 
@@ -3289,6 +3415,9 @@ function createDialog() {
         const currentUserId = sessionStorage.getItem("currentUserId");;
         localStorage.removeItem(`quizScores_${currentUserId}`); // Clear the quiz scores
         localStorage.removeItem(`quizScores_${currentUserId}`);
+        sessionStorage.removeItem("quizData");
+        sessionStorage.removeItem("quizId");
+        removeAllSections();
         dialog.close(); // Close the dialog
         returnToBeginning();
     });
@@ -3357,6 +3486,17 @@ function loadQuiz() {
     removeElementById("registerSection");
     removeElementById("loginSection");
 
+    const userScoresKey = `quizScores_${currentUserId}`;
+
+    if (localStorage.getItem(userScoresKey)) {
+        createScoresButtons();
+    }
+    else {
+        createActionButtons();
+    }
+
+
+
     createQuizSelection();
     return true;
 }
@@ -3368,6 +3508,10 @@ function loadQuiz() {
  */
 function loadProgress() {
     console.log("Loading progress");
+
+    if (!document.querySelector("#quizSection")) {
+        createQuizSection();
+    }
 
     // Get the current user ID from local storage
     const currentUserId = sessionStorage.getItem("currentUserId");;
@@ -3383,7 +3527,7 @@ function loadProgress() {
         const { currentQuestion: savedQuestion, score: savedScore } = JSON.parse(progressData);
         currentQuestion = savedQuestion;
         score = savedScore;
-        console.log(currentQuestion, score);
+        console.log("currentQuestion: ", currentQuestion, "score: ", score);
     }
     // If no progress data is found, initialize the current question and score to 0
     else {
@@ -3470,20 +3614,23 @@ function updateProgressBar() {
  * @returns {void}
  */
 function checkAnswer(selected) {
+    const selection = sessionStorage.getItem("quizData");
+    const currentQuiz = quizData[selection];
     console.log("checking answer...");
+    console.log("selected", selected);
     // Increment score if the selected answer is correct
-    if (true === selected.correct) {
+    if (true === currentQuiz[currentQuestion].answers[selected].correct) {
         score++;
     }
     // Update the current question index
     currentQuestion++;
     // Store progress only at the end of the quiz
-    if (currentQuestion < quizData.length) {
+    if (currentQuestion < totalQuestions) {
         displayQuestion(); // Show the next question
     }
     else {
         showScore(); // Display final score
-        if (currentQuestion == quizData.length) {
+        if (currentQuestion == totalQuestions) {
             currentQuestion = 0;
             score = 0;
         }
@@ -3531,22 +3678,33 @@ function showScore() {
     // Retrieve and update past scores for the current user
     const userScoresKey = `quizScores_${currentUserId}`;
     const pastScores = JSON.parse(localStorage.getItem(userScoresKey) || "[]");
+
+    const selection = sessionStorage.getItem("quizData");
+    const currentQuiz = quizData[selection];
+
     if (checkProgressAtEnd(currentUserId)) {
         // Add the new score with the current timestamp
         const timestamp = new Date().toLocaleString();
-        pastScores.push({ score: score, total: quizData.length, date: timestamp });
+        pastScores.push({ score: score, total: currentQuiz.length, date: timestamp });
         console.log(pastScores);
         // Update localStorage with the new scores
         localStorage.setItem(userScoresKey, JSON.stringify(pastScores));
+        // Sort the past scores by date (most recent first)
+        pastScores.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+        // Get the most recent score (which will be the first after sorting)
+        const mostRecentScore = pastScores[0];
+        // Update the score message with the most recent score
+        const scoreMessageEl = document.getElementById("scoreMessage");
+        if (scoreMessageEl) {
+            scoreMessageEl.textContent = `Most Recent Score: ${mostRecentScore.score} out of ${mostRecentScore.total} on ${mostRecentScore.date}`;
+        }
     }
-    // Sort the past scores by date (most recent first)
-    pastScores.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-    // Get the most recent score (which will be the first after sorting)
-    const mostRecentScore = pastScores[0];
-    // Update the score message with the most recent score
-    const scoreMessageEl = document.getElementById("scoreMessage");
-    if (scoreMessageEl) {
-        scoreMessageEl.textContent = `Most Recent Score: ${mostRecentScore.score} out of ${mostRecentScore.total} on ${mostRecentScore.date}`;
+    const quizProgress = localStorage.getItem(`quizProgress_${currentUserId}`);
+    if (quizProgress) {
+        currentQuestion = 0;
+        score = 0;
+        const userProgressKey = `quizProgress_${currentUserId}`;
+        localStorage.setItem(userProgressKey, JSON.stringify({ currentQuestion, score }));
     }
 }
 /**
@@ -3563,6 +3721,8 @@ function checkProgressAtEnd(currentUserId) {
     // Retrieve current quiz progress
     const quizProgress = localStorage.getItem(`quizProgress_${currentUserId}`);
     if (quizProgress && JSON.parse(quizProgress).currentQuestion == totalQuestions - 1) {
+        console.log("User has reached the end of the quiz");
+        JSON.parse(quizProgress).currentQuestion = 0;
         return true;
     }
     return false;
