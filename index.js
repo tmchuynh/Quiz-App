@@ -3262,7 +3262,7 @@ function createSortButtons() {
 
     // Add event listener for the "Sort by Quiz" button
     (_a = document.querySelector("#sortByQuizButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
-        // Sort past scores by date (newest to oldest)
+        // Sort past scores by quiz name (alphabetically)
         const sortedByQuiz = [...pastScores].sort((a, b) => a.quiz.localeCompare(b.quizName));
 
         // Render the sorted scores
