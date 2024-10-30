@@ -3107,6 +3107,11 @@ function createQuizSelection() {
         let quizData = button.id.split("_")[0].concat("Data");
         sessionStorage.setItem("quizData", quizData);
 
+        const tempArray = sessionStorage.getItem("quizId").split("_")[0].split(/(?=[A-Z])/);
+        tempArray[0] = tempArray[0].charAt(0).toUpperCase() + tempArray[0].slice(1);
+        const quiz_type = tempArray.join(" ");
+
+        sessionStorage.setItem("quizType", quiz_type);
 
         // Load user progress in the quiz
         loadProgress();
@@ -3232,6 +3237,7 @@ function createSortButtons() {
     actionButtons.innerHTML = `
         <button id="logoutButton" class="nes-btn is-warning">Logout</button>
         <button id="resetScoresButton" class="nes-btn is-error">Reset All Scores</button>
+        <button id="sortByQuizButton" class="nes-btn is-primary">Sort by Quiz</button>
         <button id="sortByDateButton" class="nes-btn is-primary">Sort by Date</button>
         <button id="sortByScoreButton" class="nes-btn is-primary">Sort by Score</button>
     `;
@@ -3253,6 +3259,15 @@ function createSortButtons() {
 
     // Render the past scores in a table format
     renderScores(pastScores);
+
+    // Add event listener for the "Sort by Quiz" button
+    (_a = document.querySelector("#sortByQuizButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+        // Sort past scores by date (newest to oldest)
+        const sortedByQuiz = [...pastScores].sort((a, b) => a.quiz.localeCompare(b.quizName));
+
+        // Render the sorted scores
+        renderScores(sortedByQuiz);
+    });
 
     // Add event listener for the "Sort by Date" button
     (_a = document.querySelector("#sortByDateButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
@@ -3301,16 +3316,18 @@ function renderScores(pastScores) {
     // Create table headers and rows for the scores
     const tableHeaders = `
         <tr>
+            <th>Quiz</th>
             <th>Score</th>
             <th>Percentage</th>
             <th class="scoreDate">Date</th>
         </tr>`;
     const tableRows = pastScores
-        .map(({ score, total, date }) => {
+        .map(({ score, total, quiz, date }) => {
             const percentage = ((score / total) * 100).toFixed(2); // Calculate percentage
             const formattedDate = formatDate(date);
             return `
                 <tr>
+                    <td>${quiz}</td>
                     <td>${score} / ${total}</td>
                     <td class="scorePercentage">${percentage}%</td>
                     <td class="scoreDate">${formattedDate}</td>
@@ -3339,47 +3356,7 @@ function formatDate(dateString) {
     const year = date.getFullYear().toString().slice(-2); // Get last 2 digits of the year (yy)
     return `${month}/${day}/${year}`; // Return in mm/dd/yy format
 }
-/**
- * Renders the past scores in a table format.
- * 
- * @param {Array} pastScores - An array of objects representing past scores.
- * Each object should have properties: score, total, and date.
- * 
- * @returns {void}
- */
-function renderScores(pastScores) {
-    // Remove existing sections
-    removeElementById("quizSection");
-    removeElementById("scoreSection");
-    removeElementById("pastScoresSection");
-    // Create the past scores section dynamically
-    createPastScoresSection();
-    // Create table headers and rows for the scores
-    const tableHeaders = `
-        <tr>
-            <th>Score</th>
-            <th>Percentage</th>
-            <th class="scoreDate">Date</th>
-        </tr>`;
-    const tableRows = pastScores
-        .map(({ score, total, date }) => {
-            const percentage = ((score / total) * 100).toFixed(2); // Calculate percentage
-            const formattedDate = formatDate(date);
-            return `
-                <tr>
-                    <td>${score} / ${total}</td>
-                    <td class="scorePercentage">${percentage}%</td>
-                    <td class="scoreDate">${formattedDate}</td>
-                </tr>`;
-        })
-        .join("");
-    // Insert the table into the #pastScores element
-    const pastScoresElement = document.querySelector("#pastScores");
-    pastScoresElement.innerHTML = `
-        ${tableHeaders}
-        ${tableRows}
-    `;
-}
+
 /**
  * Creates a dialog for confirming the reset of past scores.
  * 
@@ -3666,7 +3643,7 @@ function showScore() {
     if (checkProgressAtEnd(currentUserId)) {
         // Add the new score with the current timestamp
         const timestamp = new Date().toLocaleString();
-        pastScores.push({ score: score, total: currentQuiz.length, date: timestamp });
+        pastScores.push({ score: score, total: currentQuiz.length, quiz: sessionStorage.getItem("quizType"), date: timestamp });
         // Update localStorage with the new scores
         localStorage.setItem(userScoresKey, JSON.stringify(pastScores));
         // Sort the past scores by date (most recent first)
