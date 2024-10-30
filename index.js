@@ -3433,8 +3433,11 @@ function loadQuiz() {
         return true;
     }
     // Retrieve users and find the current user
-    const foundUser = sessionStorage.getItem("firstName");
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find((user) => user.id === currentUserId);
     if (!foundUser) {
+        createRegisterSection();
+        createLoginSection();
         console.error("User not found!");
         return false;
     }
