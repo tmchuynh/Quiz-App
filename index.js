@@ -3065,7 +3065,6 @@ function logoutEventListener() {
 }
 
 function createQuizSelection() {
-    console.log("Creating new quiz selection");
     const quizSelectionSection = document.createElement("div");
     quizSelectionSection.classList.add("nes-container", "is-rounded", "quiz-selection-section");
     quizSelectionSection.id = "quizSelectionSection";
@@ -3115,7 +3114,6 @@ function createQuizSelection() {
 }
 // Function to create and append the quiz section dynamically
 function createQuizSection() {
-    console.log("Creating new quiz section");
     const quizSection = document.createElement("div");
     quizSection.classList.add("nes-container", "is-rounded", "quiz-section");
     quizSection.id = "quizSection";
@@ -3167,7 +3165,6 @@ function createPastScoresSection() {
 }
 // Function to create and append the action buttons dynamically
 function createActionButtons() {
-    console.log("creating new action buttons");
     removeElementById("actionButtons");
     const actionButtons = document.createElement("section");
     actionButtons.id = "actionButtons";
@@ -3432,7 +3429,6 @@ function createDialog() {
  * @returns {void}
  */
 function returnToBeginning() {
-    console.log("returning to beginning...");
     // Reset quiz variables
     currentQuestion = 0;
     score = 0;
@@ -3452,17 +3448,14 @@ function returnToBeginning() {
  * @returns {boolean} - Returns true if the quiz is successfully loaded, false otherwise.
  */
 function loadQuiz() {
-    console.log("loading quiz...");
     const currentUserId = sessionStorage.getItem("currentUserId");;
     if (!currentUserId) {
         // If no user is logged in, show the login section
         createRegisterSection();
         createLoginSection();
-        console.log("loading register and login sections");
         return true;
     }
     // Retrieve users and find the current user
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
     const foundUser = sessionStorage.getItem("firstName");
     if (!foundUser) {
         console.error("User not found!");
@@ -3474,7 +3467,6 @@ function loadQuiz() {
     // Display a welcome message based on the user's login history
     const welcomeMessage = document.getElementById("welcomeMessage");
     if (welcomeMessage) {
-        console.log("displaying welcome message");
         if (hasLoggedInBefore) {
             welcomeMessage.textContent = `Welcome back, ${firstName}!`;
         }
@@ -3507,8 +3499,6 @@ function loadQuiz() {
  * @returns {void}
  */
 function loadProgress() {
-    console.log("Loading progress");
-
     if (!document.querySelector("#quizSection")) {
         createQuizSection();
     }
@@ -3527,7 +3517,6 @@ function loadProgress() {
         const { currentQuestion: savedQuestion, score: savedScore } = JSON.parse(progressData);
         currentQuestion = savedQuestion;
         score = savedScore;
-        console.log("currentQuestion: ", currentQuestion, "score: ", score);
     }
     // If no progress data is found, initialize the current question and score to 0
     else {
@@ -3545,8 +3534,6 @@ function loadProgress() {
  */
 function displayQuestion() {
     removeElementById("quizSelectionSection");
-    console.log("displaying question...");
-
     // Get the selected quiz data from local storage and retrieve the current question data from variable
     const selection = sessionStorage.getItem("quizData");
     const currentQuiz = quizData[selection];
@@ -3595,7 +3582,6 @@ function displayQuestion() {
  * @returns {void}
  */
 function updateProgressBar() {
-    console.log("updating progress bar...");
     const progressBar = document.getElementById("quizProgressBar");
     const progressValue = ((currentQuestion + 1) / totalQuestions) * 100; // Calculate percentage
     progressBar.value = progressValue; // Update the value of the progress bar
@@ -3642,7 +3628,6 @@ function checkAnswer(shuffledAnswers, selected) {
  * @returns {Array} - The shuffled array.
  */
 const shuffle = (array) => {
-    console.log("shuffling array...");
     // Step 1: Fisher-Yates Shuffle
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -3661,7 +3646,6 @@ const shuffle = (array) => {
  * @returns {void}
  */
 function showScore() {
-    console.log("displaying score...");
     removeAllSections();
     // Display the score section
     createScoresButtons();
@@ -3683,7 +3667,6 @@ function showScore() {
         // Add the new score with the current timestamp
         const timestamp = new Date().toLocaleString();
         pastScores.push({ score: score, total: currentQuiz.length, date: timestamp });
-        console.log(pastScores);
         // Update localStorage with the new scores
         localStorage.setItem(userScoresKey, JSON.stringify(pastScores));
         // Sort the past scores by date (most recent first)
@@ -3714,11 +3697,9 @@ function showScore() {
  * is equal to the total number of questions minus one.
  */
 function checkProgressAtEnd(currentUserId) {
-    console.log("checking progress at end...");
     // Retrieve current quiz progress
     const quizProgress = localStorage.getItem(`quizProgress_${currentUserId}`);
     if (quizProgress && JSON.parse(quizProgress).currentQuestion == totalQuestions - 1) {
-        console.log("User has reached the end of the quiz");
         JSON.parse(quizProgress).currentQuestion = 0;
         return true;
     }
@@ -3726,7 +3707,6 @@ function checkProgressAtEnd(currentUserId) {
 }
 // Initial load
 window.addEventListener("load", () => {
-    console.log("window loaded");
     loadQuiz();
 });
 //# sourceMappingURL=index.js.map
