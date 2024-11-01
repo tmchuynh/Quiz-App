@@ -2,30 +2,28 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NES Quiz App</title>
     <!-- NES.css framework -->
-    <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="src/output.css">
+    <link rel="stylesheet" href="src/output.css" />
 </head>
 
-<body>
-    <!-- Header -->
+<body class="dark:bg-gray-800 dark:text-white">
     <header>
-        <h1 class="nes-text">NES Quiz App</h1>
-        <p id="welcomeMessage"></p>
+        <h1 class="p-5 text-3xl text-center font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+            <span class="text-transparent bg-clip-text bg-gradient-to-br to-emerald-900 from-blue-100">Expanding</span>
+            Your Knowledge.
+        </h1>
+        <p id="welcomeMessage"
+            class="text-lg lg:text-xl md:text-sm text-black dark:text-white font-semibold text-center uppercase"></p>
     </header>
-    <section class="loginContainer">
-
-    </section>
-    <section class="displayContainer container">
-
-    </section>
+    <section class="loginContainer"></section>
+    <section class="displayContainer md:grid-cols-9 grid grid-cols-1 relative auto-rows-max auto-cols-auto"></section>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="src/index.js"></script>
 </body>
 
