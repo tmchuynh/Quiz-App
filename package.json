@@ -1,0 +1,14 @@
+{
+  "name": "nes-quiz-app",
+  "version": "1.0.0",
+  "description": "This is a web-based **Quiz Application** that allows users to register, log in, take quizzes, and view their past quiz scores. The application stores user data in `localStorage` and tracks quiz progress in `sessionStorage`.",
+  "main": "index.js",
+  "scripts": {
+    "tailwind": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "flowbite-typography": "^1.0.4"
+  }
+}
